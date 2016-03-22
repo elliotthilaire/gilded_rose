@@ -39,7 +39,7 @@ def update_quality_for_item(item)
       appreciate_quality(item)
 
     elsif item.name == 'Backstage passes to a TAFKAL80ETC concert'
-      item.quality = item.quality - item.quality
+      item.quality = 0
 
     else
       depreciate_quality(item)
