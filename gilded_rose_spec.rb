@@ -1,8 +1,12 @@
 require 'rspec/given'
 require 'gilded_rose'
+require 'spec_helper'
+
+
+
 
 describe "#update_quality" do
-
+  warnings = false
   context "with a single" do
     Given(:initial_sell_in) { 5 }
     Given(:initial_quality) { 10 }
@@ -162,7 +166,7 @@ describe "#update_quality" do
     end
 
     context "conjured item" do
-      before { pending }
+      before { skip }
       Given(:name) { "Conjured Mana Cake" }
 
       Invariant { item.sell_in.should == initial_sell_in-1 }
