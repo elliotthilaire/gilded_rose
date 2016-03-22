@@ -13,6 +13,10 @@ def appreciate_quality(item)
 end
 
 
+def expired?(item)
+  item.sell_in < 0
+end
+
 def update_quality_for_item(item)
   return if item.name == 'Sulfuras, Hand of Ragnaros'
 
@@ -34,7 +38,7 @@ def update_quality_for_item(item)
 
   item.sell_in -= 1
 
-  if item.sell_in < 0
+  if expired?(item)
     if item.name == 'Aged Brie'
       appreciate_quality(item)
 
