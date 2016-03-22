@@ -1,5 +1,4 @@
 
-
 def depreciate_quality(item)
   if item.quality > 0
     item.quality -= 1
@@ -12,31 +11,31 @@ def appreciate_quality(item)
   end
 end
 
-
 def expired?(item)
   item.sell_in < 0
 end
 
+
+
 def update_quality_for_item(item)
   return if item.name == 'Sulfuras, Hand of Ragnaros'
+
 
   if item.name == 'Aged Brie'
     appreciate_quality(item)
 
   elsif item.name == 'Backstage passes to a TAFKAL80ETC concert'
-      appreciate_quality(item)
-    if item.sell_in < 11
-      appreciate_quality(item)
-    end
-    if item.sell_in < 6
-      appreciate_quality(item)
-    end
+    appreciate_quality(item)
+    appreciate_quality(item) if item.sell_in < 11
+    appreciate_quality(item) if item.sell_in < 6
 
   else
     depreciate_quality(item)
   end
 
+
   item.sell_in -= 1
+
 
   if expired?(item)
     if item.name == 'Aged Brie'
@@ -50,6 +49,8 @@ def update_quality_for_item(item)
     end
   end
 end
+
+
 
 def update_quality(items)
   items.each do |item|
