@@ -6,6 +6,12 @@ def depreciate_quality(item)
   end
 end
 
+def appreciate_quality(item)
+  if item.quality < 50
+    item.quality += 1
+  end
+end
+
 def update_quality_for_item(item)
   return if item.name == 'Sulfuras, Hand of Ragnaros'
 
@@ -16,14 +22,10 @@ def update_quality_for_item(item)
       item.quality += 1
       if item.name == 'Backstage passes to a TAFKAL80ETC concert'
         if item.sell_in < 11
-          if item.quality < 50
-            item.quality += 1
-          end
+          appreciate_quality(item)
         end
         if item.sell_in < 6
-          if item.quality < 50
-            item.quality += 1
-          end
+          appreciate_quality(item)
         end
       end
     end
@@ -39,9 +41,7 @@ def update_quality_for_item(item)
         item.quality = item.quality - item.quality
       end
     else
-      if item.quality < 50
-        item.quality += 1
-      end
+      appreciate_quality(item)
     end
   end
 end
