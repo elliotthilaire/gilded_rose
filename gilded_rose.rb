@@ -4,7 +4,7 @@ class ItemProcessor
     @item = item
   end
 
-  def update_quality
+  def update_quality_and_reduce_sell_in_days
     return if @item.name == 'Sulfuras, Hand of Ragnaros'
 
     if @item.name == 'Aged Brie'
@@ -54,7 +54,7 @@ end
 
 def update_quality(items)
   items.each do |item|
-    ItemProcessor.new(item).update_quality
+    ItemProcessor.new(item).update_quality_and_reduce_sell_in_days
   end
 end
 
