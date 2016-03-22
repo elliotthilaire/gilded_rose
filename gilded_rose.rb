@@ -15,6 +15,10 @@ def expired?(item)
   item.sell_in < 0
 end
 
+def reduce_sell_in_days(item)
+  item.sell_in -= 1
+end
+
 def update_quality_for_item(item)
   return if item.name == 'Sulfuras, Hand of Ragnaros'
 
@@ -30,9 +34,7 @@ def update_quality_for_item(item)
     depreciate_quality(item)
   end
 
-
-  item.sell_in -= 1
-
+  reduce_sell_in_days(item)
 
   if expired?(item)
     if item.name == 'Aged Brie'
@@ -45,6 +47,8 @@ def update_quality_for_item(item)
       depreciate_quality(item)
     end
   end
+
+
 end
 
 
