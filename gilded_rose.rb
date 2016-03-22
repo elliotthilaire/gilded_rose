@@ -12,12 +12,14 @@ def appreciate_quality(item)
   end
 end
 
+def appreciates?(item)
+  item.name == 'Aged Brie' || item.name == 'Backstage passes to a TAFKAL80ETC concert'
+end
+
 def update_quality_for_item(item)
   return if item.name == 'Sulfuras, Hand of Ragnaros'
 
-  if item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert'
-    depreciate_quality(item)
-  else
+  if appreciates?(item)
     if item.quality < 50
       item.quality += 1
       if item.name == 'Backstage passes to a TAFKAL80ETC concert'
@@ -29,6 +31,8 @@ def update_quality_for_item(item)
         end
       end
     end
+  else
+    depreciate_quality(item)
   end
 
   item.sell_in -= 1
