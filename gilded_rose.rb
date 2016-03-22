@@ -25,29 +25,22 @@ def update_quality_for_item(item)
   if item.name == 'Aged Brie'
     appreciate_quality(item)
 
+    reduce_sell_in_days(item)
+    appreciate_quality(item) if expired?(item)
+
   elsif item.name == 'Backstage passes to a TAFKAL80ETC concert'
     appreciate_quality(item)
     appreciate_quality(item) if item.sell_in <= 10
     appreciate_quality(item) if item.sell_in <= 5
 
+    reduce_sell_in_days(item)
+    item.quality = 0 if expired?(item)
+
   else
     depreciate_quality(item)
+    reduce_sell_in_days(item)
+    depreciate_quality(item) if expired?(item)
   end
-
-  reduce_sell_in_days(item)
-
-  if expired?(item)
-    if item.name == 'Aged Brie'
-      appreciate_quality(item)
-
-    elsif item.name == 'Backstage passes to a TAFKAL80ETC concert'
-      item.quality = 0
-
-    else
-      depreciate_quality(item)
-    end
-  end
-
 
 end
 
