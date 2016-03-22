@@ -1,11 +1,16 @@
 
+
+def depreciate_quality(item)
+  if item.quality > 0
+    item.quality -= 1
+  end
+end
+
 def update_quality_for_item(item)
   return if item.name == 'Sulfuras, Hand of Ragnaros'
 
   if item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert'
-    if item.quality > 0
-        item.quality -= 1
-    end
+    depreciate_quality(item)
   else
     if item.quality < 50
       item.quality += 1
@@ -29,9 +34,7 @@ def update_quality_for_item(item)
   if item.sell_in < 0
     if item.name != 'Aged Brie'
       if item.name != 'Backstage passes to a TAFKAL80ETC concert'
-        if item.quality > 0
-          item.quality -= 1
-        end
+        depreciate_quality(item)
       else
         item.quality = item.quality - item.quality
       end
