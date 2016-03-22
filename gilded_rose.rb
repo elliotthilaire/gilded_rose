@@ -1,54 +1,58 @@
+class ItemProcessor
 
-def depreciate_quality(item)
-  if item.quality > 0
-    item.quality -= 1
-  end
-end
-
-def appreciate_quality(item)
-  if item.quality < 50
-    item.quality += 1
-  end
-end
-
-def expired?(item)
-  item.sell_in < 0
-end
-
-def reduce_sell_in_days(item)
-  item.sell_in -= 1
-end
-
-def update_quality_for_item(item)
-  return if item.name == 'Sulfuras, Hand of Ragnaros'
-
-  if item.name == 'Aged Brie'
-    appreciate_quality(item)
-
-    reduce_sell_in_days(item)
-    appreciate_quality(item) if expired?(item)
-
-  elsif item.name == 'Backstage passes to a TAFKAL80ETC concert'
-    appreciate_quality(item)
-    appreciate_quality(item) if item.sell_in <= 10
-    appreciate_quality(item) if item.sell_in <= 5
-
-    reduce_sell_in_days(item)
-    item.quality = 0 if expired?(item)
-
-  else
-    depreciate_quality(item)
-    reduce_sell_in_days(item)
-    depreciate_quality(item) if expired?(item)
+  def initialize(item)
+    @item = item
   end
 
+  def depreciate_quality
+    if @item.quality > 0
+      @item.quality -= 1
+    end
+  end
+
+  def appreciate_quality
+    if @item.quality < 50
+      @item.quality += 1
+    end
+  end
+
+  def expired?
+    @item.sell_in < 0
+  end
+
+  def reduce_sell_in_days
+    @item.sell_in -= 1
+  end
+
+  def update_quality
+    return if @item.name == 'Sulfuras, Hand of Ragnaros'
+
+    if @item.name == 'Aged Brie'
+      appreciate_quality
+      reduce_sell_in_days
+      appreciate_quality if expired?
+
+    elsif @item.name == 'Backstage passes to a TAFKAL80ETC concert'
+      appreciate_quality
+      appreciate_quality if @item.sell_in <= 10
+      appreciate_quality if @item.sell_in <= 5
+
+      reduce_sell_in_days
+      @item.quality = 0 if expired?
+
+    else
+      depreciate_quality
+      reduce_sell_in_days
+      depreciate_quality if expired?
+    end
+  end
 end
 
 
 
 def update_quality(items)
   items.each do |item|
-    update_quality_for_item(item)
+    ItemProcessor.new(item).update_quality
   end
 end
 
