@@ -37,12 +37,12 @@ def update_quality_for_item(item)
   if item.sell_in < 0
     if item.name == 'Aged Brie'
       appreciate_quality(item)
+
+    elsif item.name == 'Backstage passes to a TAFKAL80ETC concert'
+      item.quality = item.quality - item.quality
+
     else
-      if item.name == 'Backstage passes to a TAFKAL80ETC concert'
-        item.quality = item.quality - item.quality
-      else
-        depreciate_quality(item)
-      end
+      depreciate_quality(item)
     end
   end
 end
