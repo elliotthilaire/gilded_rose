@@ -4,26 +4,6 @@ class ItemProcessor
     @item = item
   end
 
-  def depreciate_quality
-    if @item.quality > 0
-      @item.quality -= 1
-    end
-  end
-
-  def appreciate_quality
-    if @item.quality < 50
-      @item.quality += 1
-    end
-  end
-
-  def expired?
-    @item.sell_in < 0
-  end
-
-  def reduce_sell_in_days
-    @item.sell_in -= 1
-  end
-
   def update_quality
     return if @item.name == 'Sulfuras, Hand of Ragnaros'
 
@@ -45,6 +25,28 @@ class ItemProcessor
       reduce_sell_in_days
       depreciate_quality if expired?
     end
+  end
+
+  private
+
+  def depreciate_quality
+    if @item.quality > 0
+      @item.quality -= 1
+    end
+  end
+
+  def appreciate_quality
+    if @item.quality < 50
+      @item.quality += 1
+    end
+  end
+
+  def expired?
+    @item.sell_in < 0
+  end
+
+  def reduce_sell_in_days
+    @item.sell_in -= 1
   end
 end
 
