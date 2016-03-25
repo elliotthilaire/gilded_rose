@@ -61,10 +61,17 @@ class ConjuredItemProcessor < ItemProcessor
   end
 end
 
+class LegendaryItemProcessor < ItemProcessor
+  def update_quality_and_reduce_sell_in_days
+    return
+  end
+end
+
 def update_quality(items)
   items.each do |item|
     case item.name
     when 'Sulfuras, Hand of Ragnaros'
+      LegendaryItemProcessor.new(item).update_quality_and_reduce_sell_in_days
     when 'Conjured Mana Cake'
       ConjuredItemProcessor.new(item).update_quality_and_reduce_sell_in_days
     when 'Backstage passes to a TAFKAL80ETC concert'
