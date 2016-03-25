@@ -1,3 +1,4 @@
+
 class ItemProcessor
 
   def initialize(item)
@@ -11,14 +12,6 @@ class ItemProcessor
       appreciate_quality
       reduce_sell_in_days
       appreciate_quality if expired?
-
-    elsif @item.name == 'Backstage passes to a TAFKAL80ETC concert'
-      appreciate_quality
-      appreciate_quality if @item.sell_in <= 10
-      appreciate_quality if @item.sell_in <= 5
-
-      reduce_sell_in_days
-      @item.quality = 0 if expired?
 
     else
       depreciate_quality
@@ -50,11 +43,24 @@ class ItemProcessor
   end
 end
 
-
+class TicketProcessor < ItemProcessor
+  def update_quality_and_reduce_sell_in_days
+    appreciate_quality
+    appreciate_quality if @item.sell_in <= 10
+    appreciate_quality if @item.sell_in <= 5
+    reduce_sell_in_days
+    @item.quality = 0 if expired?
+  end
+end
 
 def update_quality(items)
   items.each do |item|
-    ItemProcessor.new(item).update_quality_and_reduce_sell_in_days
+    case item.name
+    when 'Backstage passes to a TAFKAL80ETC concert'
+      TicketProcessor.new(item).update_quality_and_reduce_sell_in_days
+    else
+      ItemProcessor.new(item).update_quality_and_reduce_sell_in_days
+    end
   end
 end
 
