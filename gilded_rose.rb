@@ -5,9 +5,7 @@ class ItemProcessor
   end
 
   def update_quality_and_reduce_sell_in_days
-    depreciate_quality
-    reduce_sell_in_days
-    depreciate_quality if expired?
+    fail NotImplementedError
   end
 
   private
@@ -30,6 +28,14 @@ class ItemProcessor
 
   def reduce_sell_in_days
     @item.sell_in -= 1
+  end
+end
+
+class GenericItemProcessor < ItemProcessor
+  def update_quality_and_reduce_sell_in_days
+   depreciate_quality
+    reduce_sell_in_days
+    depreciate_quality if expired?
   end
 end
 
@@ -79,7 +85,7 @@ def update_quality(items)
     when 'Aged Brie'
       CheeseProcessor.new(item).update_quality_and_reduce_sell_in_days
     else
-      ItemProcessor.new(item).update_quality_and_reduce_sell_in_days
+      GenericItemProcessor.new(item).update_quality_and_reduce_sell_in_days
     end
   end
 end
