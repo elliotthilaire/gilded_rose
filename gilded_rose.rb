@@ -8,16 +8,9 @@ class ItemProcessor
   def update_quality_and_reduce_sell_in_days
     return if @item.name == 'Sulfuras, Hand of Ragnaros'
 
-    if @item.name == 'Aged Brie'
-      appreciate_quality
-      reduce_sell_in_days
-      appreciate_quality if expired?
-
-    else
-      depreciate_quality
-      reduce_sell_in_days
-      depreciate_quality if expired?
-    end
+    depreciate_quality
+    reduce_sell_in_days
+    depreciate_quality if expired?
   end
 
   private
@@ -43,6 +36,14 @@ class ItemProcessor
   end
 end
 
+class CheeseProcessor < ItemProcessor
+  def update_quality_and_reduce_sell_in_days
+    appreciate_quality
+    reduce_sell_in_days
+    appreciate_quality if expired?
+  end
+end
+
 class TicketProcessor < ItemProcessor
   def update_quality_and_reduce_sell_in_days
     appreciate_quality
@@ -58,6 +59,8 @@ def update_quality(items)
     case item.name
     when 'Backstage passes to a TAFKAL80ETC concert'
       TicketProcessor.new(item).update_quality_and_reduce_sell_in_days
+    when 'Aged Brie'
+      CheeseProcessor.new(item).update_quality_and_reduce_sell_in_days
     else
       ItemProcessor.new(item).update_quality_and_reduce_sell_in_days
     end
