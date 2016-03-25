@@ -6,8 +6,6 @@ class ItemProcessor
   end
 
   def update_quality_and_reduce_sell_in_days
-    return if @item.name == 'Sulfuras, Hand of Ragnaros'
-
     depreciate_quality
     reduce_sell_in_days
     depreciate_quality if expired?
@@ -57,6 +55,7 @@ end
 def update_quality(items)
   items.each do |item|
     case item.name
+    when 'Sulfuras, Hand of Ragnaros'
     when 'Backstage passes to a TAFKAL80ETC concert'
       TicketProcessor.new(item).update_quality_and_reduce_sell_in_days
     when 'Aged Brie'
