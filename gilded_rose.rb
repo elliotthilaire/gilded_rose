@@ -33,13 +33,13 @@ end
 
 class GenericItemProcessor < ItemProcessor
   def update_quality_and_reduce_sell_in_days
-   depreciate_quality
+    depreciate_quality
     reduce_sell_in_days
     depreciate_quality if expired?
   end
 end
 
-class CheeseProcessor < ItemProcessor
+class CheesyItemProcessor < ItemProcessor
   def update_quality_and_reduce_sell_in_days
     appreciate_quality
     reduce_sell_in_days
@@ -47,7 +47,7 @@ class CheeseProcessor < ItemProcessor
   end
 end
 
-class TicketProcessor < ItemProcessor
+class TicketItemProcessor < ItemProcessor
   def update_quality_and_reduce_sell_in_days
     appreciate_quality
     appreciate_quality if @item.sell_in <= 10
@@ -59,11 +59,9 @@ end
 
 class ConjuredItemProcessor < ItemProcessor
   def update_quality_and_reduce_sell_in_days
-    depreciate_quality
-    depreciate_quality
+    2.times { depreciate_quality }
     reduce_sell_in_days
-    depreciate_quality if expired?
-    depreciate_quality if expired?
+    2.times { depreciate_quality if expired? }
   end
 end
 
@@ -73,6 +71,7 @@ class LegendaryItemProcessor < ItemProcessor
   end
 end
 
+
 def update_quality(items)
   items.each do |item|
     case item.name
@@ -81,9 +80,9 @@ def update_quality(items)
     when 'Conjured Mana Cake'
       ConjuredItemProcessor.new(item).update_quality_and_reduce_sell_in_days
     when 'Backstage passes to a TAFKAL80ETC concert'
-      TicketProcessor.new(item).update_quality_and_reduce_sell_in_days
+      TicketItemProcessor.new(item).update_quality_and_reduce_sell_in_days
     when 'Aged Brie'
-      CheeseProcessor.new(item).update_quality_and_reduce_sell_in_days
+      CheesyItemProcessor.new(item).update_quality_and_reduce_sell_in_days
     else
       GenericItemProcessor.new(item).update_quality_and_reduce_sell_in_days
     end
