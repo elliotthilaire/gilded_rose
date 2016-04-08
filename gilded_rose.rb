@@ -10,16 +10,14 @@ class ItemProcessor
 
   private
 
-  def depreciate_quality
-    if @item.quality > 0
-      @item.quality -= 1
-    end
+  def depreciate_quality(amount:, min_level: 0 )
+    depreciated_quality = @item.quality - amount
+    @item.quality = [depreciated_quality, min_level].max
   end
 
-  def appreciate_quality
-    if @item.quality < 50
-      @item.quality += 1
-    end
+  def appreciate_quality(amount:, max_level: 50)
+    appreciated_quality = @item.quality + amount
+    @item.quality = [appreciated_quality, max_level].min
   end
 
   def expired?
@@ -33,25 +31,25 @@ end
 
 class GenericItemProcessor < ItemProcessor
   def update_quality_and_reduce_sell_in_days
-    depreciate_quality
+    depreciate_quality(amount: 1)
     reduce_sell_in_days
-    depreciate_quality if expired?
+    depreciate_quality(amount: 1) if expired?
   end
 end
 
 class CheesyItemProcessor < ItemProcessor
   def update_quality_and_reduce_sell_in_days
-    appreciate_quality
+    appreciate_quality(amount: 1)
     reduce_sell_in_days
-    appreciate_quality if expired?
+    appreciate_quality(amount: 1) if expired?
   end
 end
 
 class TicketItemProcessor < ItemProcessor
   def update_quality_and_reduce_sell_in_days
-    appreciate_quality
-    appreciate_quality if @item.sell_in <= 10
-    appreciate_quality if @item.sell_in <= 5
+    appreciate_quality(amount: 1)
+    appreciate_quality(amount: 1) if @item.sell_in <= 10
+    appreciate_quality(amount: 1) if @item.sell_in <= 5
     reduce_sell_in_days
     @item.quality = 0 if expired?
   end
@@ -59,9 +57,9 @@ end
 
 class ConjuredItemProcessor < ItemProcessor
   def update_quality_and_reduce_sell_in_days
-    2.times { depreciate_quality }
+    depreciate_quality(amount: 2)
     reduce_sell_in_days
-    2.times { depreciate_quality if expired? }
+    depreciate_quality(amount: 2) if expired?
   end
 end
 
